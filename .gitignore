@@ -1,0 +1,62 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Cache files
+.cache/
+.vscode/
+*.swp
+*.swo
+
+# Dependency directories
+dist/
+build/
+
+# Debug and coverage output
+*.pid
+*.seed
+*.pid.lock
+coverage/
+
+# IDE-specific files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Testing files
+.jest/
+.nyc_output/
+
+# Misc
+*.log.*
+*.bak
+*.orig
+
+# Local upload storage
+uploads/
+public/uploads/
+
+# PM2 logs
+pids/
+*.pid
+pm2.log
+pm2.pid
