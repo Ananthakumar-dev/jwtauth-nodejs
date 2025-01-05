@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const pool = require('../config/database')
 
 const registerValidation = require('../validators/registerValidation')
 const loginValidation = require('../validators/loginValidation')

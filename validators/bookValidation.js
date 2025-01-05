@@ -1,6 +1,6 @@
 const { body } = require('express-validator');
 
-const registerValidation = [
+const bookValidation = [
     body('title')
         .notEmpty()
         .withMessage('Title is required.')
@@ -8,4 +8,4 @@ const registerValidation = [
         .withMessage('Title must be between 3 and 255 characters.'),
 ];
 
-module.exports = registerValidation;
+module.exports = bookValidation;

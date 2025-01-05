@@ -10,12 +10,12 @@ router.param('id', paramsMiddleware)
 router
     .route('/')
     .get(getBooks)
-    .post(createBook)
+    .post(bookValidation, validate, createBook)
 
 router
     .route('/:id')
     .get(getBookById)
-    .put(updateBook)
+    .put(bookValidation, validate, updateBook)
     .delete(deleteBook)
 
 module.exports = router;
