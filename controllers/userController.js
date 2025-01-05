@@ -1,6 +1,8 @@
 const pool = require('../config/database')
 const catchAsync = require('../utils/catchAsync')
 const { encrypt } = require('../utils/bcrypt')
+const { resizeImages } = require('../utils/sharp')
+const path = require("node:path");
 
 exports.getUserDetails = catchAsync(async (req, res) => {
     const user_id = req?.user?.id || null;
@@ -113,6 +115,9 @@ exports.uploadUserPhoto = catchAsync(async (req, res) => {
             message: 'User id not found'
         });
     }
+
+    const outputDir = path.join(process.cwd(), 'public/images/users');
+    resizeImages(req.file, outputDir);
 
     const [ result ] = await pool.query(
         'UPDATE users SET photo = ? WHERE id = ?',

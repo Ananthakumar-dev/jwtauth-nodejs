@@ -1,5 +1,7 @@
 const pool = require('../config/database')
 const catchAsync = require('../utils/catchAsync')
+const path = require("node:path");
+const { resizeImages } = require("../utils/sharp");
 
 exports.paramsMiddleware = async (req, res, next, value) => {
     const bookId = value;
@@ -180,9 +182,12 @@ exports.uploadBooksPhotos = catchAsync(async (req, res) => {
         })
     }
 
+    const outputDir = path.join(process.cwd(), `public/images/books/${bookId}`);
     const files = req.files
     if(files.length) {
         for (const file of files) {
+            resizeImages(file, outputDir);
+
             // Update query for each file
             await pool.query(
                 'INSERT INTO book_files (book_id, name) VALUES (?, ?)',

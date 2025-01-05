@@ -31,7 +31,7 @@ const multerFilter = (type) => {
         if(file.mimetype.startsWith(type)) {
             cb(null, true);
         } else {
-            cb('Please upload image only', false)
+            cb(new Error('Please upload image only'), false)
         }
     }
 }
@@ -49,7 +49,10 @@ exports.createUploadInstance = (dirPath, type = 'images', dynamicDir = false) =>
 
     const upload = multer({
         storage,
-        fileFilter
+        fileFilter,
+        limits: {
+            fileSize: 5 * 1024 * 1024 // Limit file size to 5MB
+        }
     })
 
     return upload;
