@@ -13,7 +13,7 @@ exports.getUserDetails = catchAsync(async (req, res) => {
     }
 
     const [ result ] = await pool.query(
-        'SELECT username, email, role FROM users WHERE id = ?',
+        "SELECT username, email, role, photo, CONCAT('/images/users/', photo) AS photoUrl FROM users WHERE id = ?",
         [ user_id ]
     );
 
@@ -98,6 +98,36 @@ exports.deleteUser = catchAsync(async (req, res) => {
         return res.status(404).json({
             status: false,
             message: 'Something went wrong while delete user',
+        })
+    }
+})
+
+exports.uploadUserPhoto = catchAsync(async (req, res) => {
+    const { filename } = req.file
+
+    const user_id = req?.user?.id || null;
+
+    if(!user_id) {
+        return res.status(404).json({
+            status: false,
+            message: 'User id not found'
+        });
+    }
+
+    const [ result ] = await pool.query(
+        'UPDATE users SET photo = ? WHERE id = ?',
+        [ filename, user_id ]
+    )
+
+    if(result.affectedRows) {
+        return res.status(201).json({
+            status: true,
+            message: 'Photo uploaded successfully'
+        })
+    } else {
+        return res.status(404).json({
+            status: false,
+            message: 'Something went wrong while update photo',
         })
     }
 })

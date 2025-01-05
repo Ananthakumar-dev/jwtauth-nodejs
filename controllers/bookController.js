@@ -39,7 +39,7 @@ exports.getBooks = catchAsync(async (req, res) => {
     }
 
     const [ result ] = await pool.query(
-        'SELECT * FROM books WHERE user_id = ?',
+        "SELECT books.id, user_id, title, description, GROUP_CONCAT(book_files.name SEPARATOR ' | ') AS files FROM books LEFT JOIN book_files ON books.id = book_files.book_id WHERE books.user_id = ? GROUP BY books.id",
         [ user_id ]
     );
 
@@ -95,7 +95,7 @@ exports.getBookById = catchAsync(async (req, res) => {
     }
 
     const [ result ] = await pool.query(
-        'SELECT * FROM books where id = ? AND user_id = ?',
+        "SELECT books.id, user_id, title, description, GROUP_CONCAT(book_files.name SEPARATOR ' | ') AS files FROM books LEFT JOIN book_files ON books.id = book_files.book_id where books.id = ? AND user_id = ? GROUP BY books.id",
         [ bookId, user_id ]
     );
 
@@ -167,4 +167,32 @@ exports.deleteBook = catchAsync(async (req, res) => {
             message: 'Something went wrong while delete book',
         })
     }
+})
+
+exports.uploadBooksPhotos = catchAsync(async (req, res) => {
+    const user_id = req?.user?.id || null
+    const bookId = req.params.id
+
+    if(!user_id) {
+        res.status(404).json({
+            status: true,
+            message: 'User Not found'
+        })
+    }
+
+    const files = req.files
+    if(files.length) {
+        for (const file of files) {
+            // Update query for each file
+            await pool.query(
+                'INSERT INTO book_files (book_id, name) VALUES (?, ?)',
+                [bookId, file.filename]
+            );
+        }
+    }
+
+    return res.status(201).json({
+        status: true,
+        message: 'Photos are uploaded successfully'
+    })
 })

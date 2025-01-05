@@ -8,6 +8,7 @@ const bookRoutes = require('./routes/bookRoutes');
 const jwtMiddleware = require('./middlewares/jwtMiddleware')
 
 app.use(express.json())
+app.use(express.static('public'))
 
 app.use('/api/v1/auth', authRoutes)
 
@@ -17,6 +18,7 @@ app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/books', bookRoutes)
 
 app.use((err, req, res, next) => {
+  console.log(err)
   return res.status(500).json({
     status: false,
     message: err?.message || 'Something went wrong'

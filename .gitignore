@@ -54,6 +54,7 @@ coverage/
 # Local upload storage
 uploads/
 public/uploads/
+public/images/
 
 # PM2 logs
 pids/
