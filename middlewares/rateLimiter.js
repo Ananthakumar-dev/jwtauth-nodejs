@@ -57,8 +57,8 @@ const createRateLimiterUsingRedis = (maxRequests, windowMs) => {
 
 const createRateLimiter = (maxRequests, windowMs) => {
     return rateLimit({
-        windowMs: windowMs, // 10 minutes
-        max: maxRequests, // Limit each user to 20 requests per windowMs
+        windowMs: windowMs,
+        max: maxRequests,
         keyGenerator: (req) => req.user?.id || req.ip, // Use user ID if available; fallback to IP
         message: 'Too many requests from this user, please try again later.',
     });
