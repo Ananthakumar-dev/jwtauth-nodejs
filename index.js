@@ -10,10 +10,10 @@ const jwtMiddleware = require('./middlewares/jwtMiddleware')
 app.use(express.json())
 
 app.use('/api/v1/auth', authRoutes)
-app.use('/api/v1/users', userRoutes)
 
 // Authorized routes
 app.use(jwtMiddleware)
+app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/books', bookRoutes)
 
 app.use((err, req, res, next) => {

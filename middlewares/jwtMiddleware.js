@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
         const decoded = await verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next();
-    } catch {
-        res.status(400).json({ error: 'Invalid token' });
+    } catch(error) {
+        res.status(400).json({ error: error.message || 'Invalid token' });
     }
 };
