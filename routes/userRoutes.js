@@ -4,6 +4,11 @@ const { getUserDetails, updateUser, deleteUser, uploadUserPhoto } = require('../
 const userUpdateProfileValidation = require('../validators/userUpdateProfileValidation')
 const validate = require('../middlewares/validate')
 const { createUploadInstance } = require('../utils/multer')
+const createRateLimiter = require('../middlewares/rateLimiter')
+
+// Configure rate limiter (10 requests per minute)
+const rateLimiter = createRateLimiter(5, 60 * 1000);
+router.use(rateLimiter)
 
 router
     .route('/')
