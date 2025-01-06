@@ -2,6 +2,7 @@ const pool = require('../config/database')
 const catchAsync = require('../utils/catchAsync')
 const path = require("node:path");
 const { resizeImages } = require("../utils/sharp");
+const { removeDir } = require('../utils/helpers');
 
 exports.paramsMiddleware = async (req, res, next, value) => {
     const bookId = value;
@@ -159,6 +160,10 @@ exports.deleteBook = catchAsync(async (req, res) => {
     );
 
     if(result.affectedRows) {
+        await removeDir(
+            `public/images/books/${bookId}`
+        );
+
         return res.status(201).json({
             status: true,
             message: 'Book deleted successfully'
